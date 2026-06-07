@@ -40,11 +40,11 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([Widgets\AccountWidget::class])
             ->navigationGroups([
-                NavigationGroup::make('Content')->icon('heroicon-o-document-text'),
-                NavigationGroup::make('Media')->icon('heroicon-o-photo'),
-                NavigationGroup::make('Advertising')->icon('heroicon-o-megaphone'),
-                NavigationGroup::make('Users')->icon('heroicon-o-users'),
-                NavigationGroup::make('Settings')->icon('heroicon-o-cog-6-tooth'),
+                NavigationGroup::make('Content'),
+                NavigationGroup::make('Media'),
+                NavigationGroup::make('Advertising'),
+                NavigationGroup::make('Users'),
+                NavigationGroup::make('Settings'),
             ])
             ->middleware([
                 EncryptCookies::class,
