@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\NepaliDateService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,6 +21,7 @@ class Article extends Model
         'status', 'published_at', 'scheduled_at',
         'seo_title', 'seo_description', 'seo_keywords',
         'views', 'reading_time',
+        'published_date_np', 'published_date_np_en',
     ];
 
     protected function casts(): array
@@ -46,13 +48,30 @@ class Article extends Model
                 $wordCount = str_word_count(strip_tags($article->content));
                 $article->reading_time = max(1, (int) ceil($wordCount / 200));
             }
+            // Set Nepali publish date
+            static::fillNepaliDate($article);
         });
         static::updating(function ($article) {
             if ($article->isDirty('content')) {
                 $wordCount = str_word_count(strip_tags($article->content));
                 $article->reading_time = max(1, (int) ceil($wordCount / 200));
             }
+            // Recalculate Nepali date if published_at changes
+            if ($article->isDirty('published_at') || $article->isDirty('status')) {
+                static::fillNepaliDate($article);
+            }
         });
+    }
+
+    protected static function fillNepaliDate($article): void
+    {
+        $date = $article->published_at
+            ? \Carbon\Carbon::parse($article->published_at)->toDateString()
+            : now()->toDateString();
+
+        $np = NepaliDateService::convert($date);
+        $article->published_date_np    = $np['np'];
+        $article->published_date_np_en = $np['np_en'];
     }
 
     // Scopes

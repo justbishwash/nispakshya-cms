@@ -121,6 +121,16 @@ class ArticleResource extends Resource
                                     ->label('Schedule Date'),
                             ]),
 
+                            Forms\Components\Grid::make(2)->schema([
+                                Forms\Components\Placeholder::make('published_date_np')
+                                    ->label('Nepali Date (देवनागरी)')
+                                    ->content(fn ($record) => $record?->published_date_np ?? '—'),
+
+                                Forms\Components\Placeholder::make('published_date_np_en')
+                                    ->label('Nepali Date (English)')
+                                    ->content(fn ($record) => $record?->published_date_np_en ?? '—'),
+                            ]),
+
                             Forms\Components\Grid::make(3)->schema([
                                 Forms\Components\Toggle::make('is_breaking')
                                     ->label('Breaking News'),
@@ -193,6 +203,10 @@ class ArticleResource extends Resource
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('views')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('published_date_np')
+                    ->label('मिति')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('published_at')

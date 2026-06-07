@@ -19,7 +19,8 @@ class ArticleController extends Controller
             ->select([
                 'id', 'title', 'slug', 'excerpt', 'featured_image',
                 'author_id', 'category_id', 'is_breaking', 'is_trending',
-                'is_featured', 'published_at', 'views', 'reading_time',
+                'is_featured', 'published_at', 'published_date_np', 'published_date_np_en',
+                'views', 'reading_time',
             ]);
 
         if ($request->filled('category')) {
@@ -80,7 +81,7 @@ class ArticleController extends Controller
         $articles = Article::published()
             ->where('is_trending', true)
             ->with(['category:id,name,slug'])
-            ->select(['id', 'title', 'slug', 'featured_image', 'category_id', 'views', 'published_at'])
+            ->select(['id', 'title', 'slug', 'featured_image', 'category_id', 'views', 'published_at', 'published_date_np', 'published_date_np_en'])
             ->latest('published_at')
             ->limit(10)
             ->get();
@@ -94,7 +95,7 @@ class ArticleController extends Controller
         $articles = Article::published()
             ->where('is_featured', true)
             ->with(['category:id,name,slug', 'author:id,name'])
-            ->select(['id', 'title', 'slug', 'excerpt', 'featured_image', 'category_id', 'author_id', 'published_at', 'reading_time'])
+            ->select(['id', 'title', 'slug', 'excerpt', 'featured_image', 'category_id', 'author_id', 'published_at', 'published_date_np', 'published_date_np_en', 'reading_time'])
             ->latest('published_at')
             ->limit(6)
             ->get();
