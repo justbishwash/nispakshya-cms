@@ -89,7 +89,6 @@ class ArticleResource extends Resource
                                 ->label('Featured Image')
                                 ->image()
                                 ->directory('articles/featured')
-                                ->imageEditor()
                                 ->columnSpanFull(),
 
                             Forms\Components\TextInput::make('featured_image_caption')

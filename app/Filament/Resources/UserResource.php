@@ -42,7 +42,7 @@ class UserResource extends Resource
                 Forms\Components\Toggle::make('is_active')->default(true),
             ]),
             Forms\Components\FileUpload::make('avatar')
-                ->image()->directory('avatars')->circular()->columnSpanFull(),
+                ->image()->directory('avatars')->columnSpanFull(),
             Forms\Components\Textarea::make('bio')->rows(3)->columnSpanFull(),
         ]);
     }
