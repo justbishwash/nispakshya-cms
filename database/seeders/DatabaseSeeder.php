@@ -2,24 +2,36 @@
 
 namespace Database\Seeders;
 
+use App\Models\Setting;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Super Admin
+        User::updateOrCreate(
+            ['email' => 'admin@nispakshya.com'],
+            [
+                'name'       => 'Super Admin',
+                'password'   => Hash::make('Admin@1234'),
+                'role'       => 'super_admin',
+                'is_active'  => true,
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Default site settings
+        $defaults = [
+            ['key' => 'site_name',       'value' => 'Nispakshya',          'group' => 'general'],
+            ['key' => 'site_tagline',    'value' => 'निष्पक्ष समाचार',     'group' => 'general'],
+            ['key' => 'contact_email',   'value' => 'info@nispakshya.com', 'group' => 'general'],
+            ['key' => 'robots_txt',      'value' => "User-agent: *\nAllow: /\nSitemap: /sitemap.xml", 'group' => 'seo'],
+        ];
+
+        foreach ($defaults as $s) {
+            Setting::updateOrCreate(['key' => $s['key']], ['value' => $s['value'], 'group' => $s['group']]);
+        }
     }
 }
